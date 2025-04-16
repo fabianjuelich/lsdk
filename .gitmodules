@@ -4,7 +4,7 @@
 	branch = ms-iot-grapeboard
 [submodule "cst"]
 	path = cst
-	url = https://source.codeaurora.org/external/qoriq/qoriq-components/cst
+	url = https://github.com/nxp-qoriq/cst
 	branch = github.qoriq-os/integration
 [submodule "optee_os"]
 	path = optee_os
@@ -31,5 +31,5 @@
 	branch = master
 [submodule "ppa-generic"]
 	path = ppa-generic
-	url = https://source.codeaurora.org/external/qoriq/qoriq-components/ppa-generic
+	url = https://github.com/nxp-qoriq/ppa-generic
 	branch = github.qoriq-os/integration
