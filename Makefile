@@ -9,7 +9,7 @@ UBOOT_SRC_PATH = u-boot
 UBOOT_BUILD_PATH = $(O)/u-boot
 OPTEE_BUILD_PATH = $(O)/optee
 LINUX_BUILD_PATH = $(O)/linux
-UBUNTU_BASE_URL = http://cdimage.ubuntu.com/ubuntu-base/releases/bionic/release/ubuntu-base-18.04-base-arm64.tar.gz
+UBUNTU_BASE_URL = https://cdimage.ubuntu.com/ubuntu-base/releases/bionic/release/ubuntu-base-18.04.5-base-arm64.tar.gz
 UBUNTU_BASE_FILENAME = $(notdir $(UBUNTU_BASE_URL))
 RFS_DIR = $(O)/rfs
 
