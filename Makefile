@@ -209,7 +209,7 @@ $(RFS_TARGET): \
 
 	@echo "Configuring network"
 	cp $(RFS_DIR)/etc/network/interfaces $(O)/interfaces
-	echo "auto eth0" >> $(O)/interfaces
+	echo "allow-hotplug eth0" >> $(O)/interfaces
 	echo "iface eth0 inet dhcp" >> $(O)/interfaces
 	sudo cp $(O)/interfaces $(RFS_DIR)/etc/network/interfaces
 
