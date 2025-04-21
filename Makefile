@@ -9,8 +9,9 @@ UBOOT_SRC_PATH = u-boot
 UBOOT_BUILD_PATH = $(O)/u-boot
 OPTEE_BUILD_PATH = $(O)/optee
 LINUX_BUILD_PATH = $(O)/linux
-UBUNTU_BASE_URL = https://cdimage.ubuntu.com/ubuntu-base/releases/bionic/release/ubuntu-base-18.04.5-base-arm64.tar.gz
-UBUNTU_BASE_FILENAME = $(notdir $(UBUNTU_BASE_URL))
+UBUNTU_BASE_URL_1 = https://cdimage.ubuntu.com/ubuntu-base/releases/bionic/release/ubuntu-base-18.04.5-base-arm64.tar.gz
+UBUNTU_BASE_URL_2 = https://cdimage.ubuntu.com/ubuntu-base/releases/18.04/release/ubuntu-base-18.04.5-base-arm64.tar.gz
+UBUNTU_BASE_FILENAME = ubuntu-base-18.04.5-base-arm64.tar.gz
 RFS_DIR = $(O)/rfs
 
 # file used to determine if the base RFS has been built
@@ -247,12 +248,19 @@ rfs-additions: $(RFS_TARGET) \
 	sudo cp cyres_test/ta/*.ta $(RFS_DIR)/lib/optee_armtz
 
 # download Ubuntu Base RootFS archive from Ubuntu
+# Try both URLs in case one fails
 $(O)/download/$(UBUNTU_BASE_FILENAME):
 	# only download if it doesn't already exist. To force it to be
 	# re-downloaded, delete $(O)/download
 	@if [ ! -f $@ ]; then \
 	    echo "Downloading Ubuntu Base RootFS"; \
-	    wget -c -P $(O)/download $(UBUNTU_BASE_URL); \
+	    if wget -c -P $(O)/download $(UBUNTU_BASE_URL_1); then \
+	        echo "Successfully downloaded from primary URL"; \
+	    else \
+	        echo "Primary URL failed, trying alternative URL"; \
+	        wget -c -P $(O)/download $(UBUNTU_BASE_URL_2) || \
+	        { echo "Both URLs failed, cannot download Ubuntu Base"; exit 1; }; \
+	    fi; \
 	fi
 
 # Usage: make sdcard DEV=/dev/sdX
