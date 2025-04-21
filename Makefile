@@ -196,15 +196,15 @@ $(RFS_TARGET): \
 	echo "echo -e 'root\nroot\n' | passwd root" | sudo chroot $(RFS_DIR)
 	echo "echo -e 'user\nuser\n' | passwd user" | sudo chroot $(RFS_DIR)
 
-	@echo "Installing packages"
-	sudo chroot $(RFS_DIR) apt-get --assume-yes install \
-		sudo ssh vim udev kmod ifupdown net-tools
+	@echo "Skip Installing packages"
+	# sudo chroot $(RFS_DIR) apt-get --assume-yes install \
+	#	sudo ssh vim udev kmod ifupdown net-tools
 
-	@echo "Configuring network"
-	cp $(RFS_DIR)/etc/network/interfaces $(O)/interfaces
-	echo "auto eth0" >> $(O)/interfaces
-	echo "iface eth0 inet dhcp" >> $(O)/interfaces
-	sudo cp $(O)/interfaces $(RFS_DIR)/etc/network/interfaces
+	@echo "Skip Configuring network"
+	# cp $(RFS_DIR)/etc/network/interfaces $(O)/interfaces
+	# echo "auto eth0" >> $(O)/interfaces
+	# echo "iface eth0 inet dhcp" >> $(O)/interfaces
+	# sudo cp $(O)/interfaces $(RFS_DIR)/etc/network/interfaces
 
 .PHONY: rfs-additions
 rfs-additions: $(RFS_TARGET) \
