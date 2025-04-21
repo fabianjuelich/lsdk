@@ -187,6 +187,9 @@ $(RFS_TARGET): \
 	@echo "Preparing rootfs for chroot"
 	sudo cp /etc/resolv.conf $(RFS_DIR)/etc/resolv.conf
 
+	# Mount random devices
+	sudo mount -o bind /dev $(RFS_DIR)/dev
+
 	update-binfmts --enable qemu-aarch64
 	sudo cp /usr/bin/qemu-aarch64-static $(RFS_DIR)/usr/bin/
 	sudo cp /usr/bin/qemu-arm-static $(RFS_DIR)/usr/bin/
@@ -197,15 +200,21 @@ $(RFS_TARGET): \
 	echo "echo -e 'root\nroot\n' | passwd root" | sudo chroot $(RFS_DIR)
 	echo "echo -e 'user\nuser\n' | passwd user" | sudo chroot $(RFS_DIR)
 
-	@echo "Skip Installing packages"
-	# sudo chroot $(RFS_DIR) apt-get --assume-yes install \
-	#	sudo ssh vim udev kmod ifupdown net-tools
+	@echo "Updating package repositories"
+	sudo chroot $(RFS_DIR) apt-get update
 
-	@echo "Skip Configuring network"
-	# cp $(RFS_DIR)/etc/network/interfaces $(O)/interfaces
-	# echo "auto eth0" >> $(O)/interfaces
-	# echo "iface eth0 inet dhcp" >> $(O)/interfaces
-	# sudo cp $(O)/interfaces $(RFS_DIR)/etc/network/interfaces
+	@echo "Installing packages"
+	sudo chroot $(RFS_DIR) apt-get --assume-yes install \
+		sudo ssh vim udev kmod ifupdown net-tools
+
+	@echo "Configuring network"
+	cp $(RFS_DIR)/etc/network/interfaces $(O)/interfaces
+	echo "auto eth0" >> $(O)/interfaces
+	echo "iface eth0 inet dhcp" >> $(O)/interfaces
+	sudo cp $(O)/interfaces $(RFS_DIR)/etc/network/interfaces
+
+	# Unmount random devices
+	sudo umount $(RFS_DIR)/dev
 
 .PHONY: rfs-additions
 rfs-additions: $(RFS_TARGET) \
