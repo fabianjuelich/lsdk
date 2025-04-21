@@ -197,7 +197,7 @@ TEE test application done!
 	```
 	export TA_DEV_KIT_DIR=$PWD/build/optee/export-ta_arm64/
 	export TEEC_EXPORT=$PWD/build/optee_client/export
-	export HOST_CROSS_COMPILE=aarch64-linux-gnu-
+	export CROSS_COMPILE=aarch64-linux-gnu-
 	```
 1. Change directories outside this repository, and clone `optee_examples`.
 	```
