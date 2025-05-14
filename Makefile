@@ -205,7 +205,7 @@ $(RFS_TARGET): \
 
 	@echo "Installing packages"
 	sudo chroot $(RFS_DIR) apt-get --assume-yes install \
-		sudo ssh vim udev kmod ifupdown net-tools
+		sudo ssh vim udev kmod ifupdown net-tools nano iputils-ping curl
 
 	@echo "Configuring network"
 	cp $(RFS_DIR)/etc/network/interfaces $(O)/interfaces
